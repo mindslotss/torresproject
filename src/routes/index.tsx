@@ -4,6 +4,7 @@ import { useState } from "react";
 import { toast, Toaster } from "sonner";
 import { ArrowUpRight, Plus, Phone } from "lucide-react";
 
+import logoImg from "@/assets/logo.png";
 import { submitEstimate } from "@/lib/estimate.functions";
 
 export const Route = createFileRoute("/")({
@@ -83,9 +84,9 @@ function Nav() {
   return (
     <header className="fixed inset-x-0 top-0 z-50">
       <div className="mx-auto flex h-14 max-w-[1400px] items-center justify-between px-6">
-        <a href="#top" className="flex items-center gap-2">
-          <span className="grid h-7 w-7 place-items-center rounded-full bg-accent text-ink font-heading text-[13px] font-bold">T</span>
-          <span className="hidden text-[11px] font-medium uppercase tracking-[0.22em] text-paper/60 sm:inline">
+        <a href="#top" className="flex items-center gap-2.5">
+          <img src={logoImg} alt="Torres Paint & Drywall" className="h-9 w-9 rounded-full bg-paper/95 object-contain p-0.5" />
+          <span className="hidden text-[11px] font-medium uppercase tracking-[0.22em] text-paper/70 sm:inline">
             Torres — Paint & Drywall
           </span>
         </a>
