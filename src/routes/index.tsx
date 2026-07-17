@@ -2,17 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { toast, Toaster } from "sonner";
-import {
-  ShieldCheck,
-  CalendarClock,
-  Award,
-  Phone,
-  Mail,
-  MapPin,
-  Check,
-  Star,
-  ArrowRight,
-} from "lucide-react";
+import { ArrowUpRight, Plus, Phone } from "lucide-react";
 
 import { submitEstimate } from "@/lib/estimate.functions";
 
@@ -29,147 +19,152 @@ const EXTERIOR_IMG =
 const DRYWALL_IMG =
   "https://imagedelivery.net/xaKlCos5cTg_1RWzIu_h-A/79eb35dd-64e3-47cf-a1f3-11791840a700/public";
 
-const SERVICES = [
+const PROJECTS = [
   {
-    title: "Interior Painting",
-    description:
-      "Walls, ceilings, trim, and custom finishes with meticulous prep and low-VOC premium paints.",
+    n: "01",
+    title: "Full interior repaint",
+    location: "Celina, TX",
+    year: "2025",
+    tag: "Interior",
+    scope: "3,400 sqft · 12 rooms · Level-5 finish",
     image: INTERIOR_IMG,
   },
   {
-    title: "Exterior Painting",
-    description:
-      "Weather-resistant coatings built for the North Texas sun — siding, brick, stucco, trim, and doors.",
+    n: "02",
+    title: "Exterior refresh & trim",
+    location: "Sherman, TX",
+    year: "2024",
+    tag: "Exterior",
+    scope: "Siding · Fascia · Front door restore",
     image: EXTERIOR_IMG,
   },
   {
-    title: "Drywall & Repair",
-    description:
-      "Seamless patchwork, texture matching, and new installation from framing to level-5 smooth finish.",
+    n: "03",
+    title: "Drywall repair & retexture",
+    location: "Whitesboro, TX",
+    year: "2024",
+    tag: "Drywall",
+    scope: "Water damage rebuild · Knockdown match",
     image: DRYWALL_IMG,
   },
 ];
 
-const AREAS = [
-  "Whitesboro",
-  "Sherman",
-  "Gainesville",
-  "Celina",
-  "Collinsville",
-  "Gunter",
-  "Van Alstyne",
-  "Denison",
+const CAPABILITIES = [
+  { k: "01", t: "Interior painting", d: "Walls, ceilings, trim, cabinetry, custom finishes." },
+  { k: "02", t: "Exterior painting", d: "Siding, brick, stucco, doors — built for Texas sun." },
+  { k: "03", t: "Drywall & repair", d: "Patchwork, texture matching, new installs, level-5." },
+  { k: "04", t: "Prep & protection", d: "Meticulous masking, sanding, priming — every time." },
 ];
 
-const STEPS = [
-  { n: "01", title: "Free Estimate", body: "On-site walkthrough and a clear written quote — no surprises." },
-  { n: "02", title: "Prep & Protect", body: "Floors masked, furniture covered, surfaces sanded and primed." },
-  { n: "03", title: "Precision Paint", body: "Careful application with premium materials and steady hands." },
-  { n: "04", title: "Final Walkthrough", body: "We inspect every corner with you before we call it done." },
+const AREAS = [
+  "Whitesboro", "Sherman", "Gainesville", "Celina",
+  "Collinsville", "Gunter", "Van Alstyne", "Denison",
 ];
 
 function Home() {
   return (
-    <div className="min-h-screen bg-paper text-ink selection:bg-ink selection:text-paper">
-      <Toaster position="top-center" richColors />
+    <div className="min-h-screen bg-ink text-paper font-body antialiased selection:bg-paper selection:text-ink">
+      <Toaster position="top-center" richColors theme="dark" />
       <Nav />
       <Hero />
-      <TrustBar />
-      <Services />
-      <Process />
-      <Testimonial />
-      <EstimateSection />
-      <ServiceAreas />
+      <Marquee />
+      <Index />
+      <Featured />
+      <Capabilities />
+      <Numbers />
+      <Estimate />
       <Footer />
     </div>
   );
 }
 
+/* ---------------- NAV ---------------- */
 function Nav() {
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-ink/5 bg-paper/85 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-        <a href="#top" className="flex items-baseline gap-2">
-          <span className="font-heading text-lg font-bold uppercase tracking-tight text-ink">
-            Torres
-          </span>
-          <span className="hidden text-[10px] uppercase tracking-[0.25em] text-ink/40 sm:inline">
-            Paint & Drywall
+    <header className="fixed inset-x-0 top-0 z-50">
+      <div className="mx-auto flex h-14 max-w-[1400px] items-center justify-between px-6">
+        <a href="#top" className="flex items-center gap-2">
+          <span className="grid h-7 w-7 place-items-center rounded-full bg-accent text-ink font-heading text-[13px] font-bold">T</span>
+          <span className="hidden text-[11px] font-medium uppercase tracking-[0.22em] text-paper/60 sm:inline">
+            Torres — Paint & Drywall
           </span>
         </a>
-        <div className="hidden items-center gap-8 md:flex">
-          <a href="#services" className="text-sm font-medium text-ink/70 transition-colors hover:text-ink">
-            Services
-          </a>
-          <a href="#process" className="text-sm font-medium text-ink/70 transition-colors hover:text-ink">
-            Process
-          </a>
-          <a href="#areas" className="text-sm font-medium text-ink/70 transition-colors hover:text-ink">
-            Service Areas
-          </a>
-          <a href="#estimate" className="text-sm font-medium text-ink/70 transition-colors hover:text-ink">
-            Contact
-          </a>
-        </div>
-        <a
-          href="#estimate"
-          className="inline-flex h-9 items-center rounded-full bg-ink px-5 text-sm font-medium text-paper transition-transform hover:bg-ink-muted active:scale-95"
-        >
-          Free Estimate
+        <nav className="hidden items-center gap-8 md:flex">
+          {["Work", "Services", "Studio", "Contact"].map((l, i) => (
+            <a key={l} href={["#work","#services","#numbers","#estimate"][i]}
+               className="group flex items-center gap-1.5 text-[13px] text-paper/70 transition-colors hover:text-paper">
+              <span className="text-[10px] text-paper/30">0{i+1}</span>
+              {l}
+            </a>
+          ))}
+        </nav>
+        <a href="#estimate"
+           className="group inline-flex h-9 items-center gap-2 rounded-full border border-paper/20 pl-4 pr-1 text-[12px] font-medium text-paper transition-colors hover:border-paper/60">
+          Start a project
+          <span className="grid h-7 w-7 place-items-center rounded-full bg-accent text-ink transition-transform group-hover:rotate-45">
+            <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2.5} />
+          </span>
         </a>
       </div>
-    </nav>
+    </header>
   );
 }
 
+/* ---------------- HERO ---------------- */
 function Hero() {
   return (
-    <section id="top" className="relative overflow-hidden">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-6 pt-16 pb-24 lg:grid-cols-12 lg:pt-24">
-        <div className="lg:col-span-7">
-          <div className="mb-6 flex items-center gap-3">
-            <div className="flex items-center gap-0.5 text-ink">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star key={i} className="h-4 w-4 fill-ink" strokeWidth={0} />
-              ))}
-            </div>
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-ink/60">
-              Family Owned Since 2012
-            </span>
-          </div>
-          <h1 className="font-heading text-5xl font-semibold leading-[1.02] tracking-tight text-ink text-balance md:text-6xl lg:text-7xl">
-            Premium painting & drywall for North Texas homes.
-          </h1>
-          <p className="mt-8 max-w-xl text-lg text-ink-muted/80 text-pretty">
-            Interior painting, exterior painting, and flawless drywall repair in Whitesboro,
-            Sherman, Gainesville, Celina and beyond. Quality lifetime paints and a satisfaction
-            guarantee on every job.
-          </p>
-          <div className="mt-10 flex flex-wrap gap-3">
-            <a
-              href="#estimate"
-              className="inline-flex h-12 items-center gap-2 rounded-full bg-ink px-7 font-medium text-paper transition-colors hover:bg-ink-muted"
-            >
-              Get a Free Estimate
-              <ArrowRight className="h-4 w-4" />
-            </a>
-            <a
-              href="tel:"
-              className="inline-flex h-12 items-center gap-2 rounded-full border border-ink/15 bg-transparent px-7 font-medium text-ink transition-colors hover:bg-parchment"
-            >
-              <Phone className="h-4 w-4" />
-              Call Now
-            </a>
-          </div>
+    <section id="top" className="relative min-h-screen overflow-hidden pt-28">
+      {/* grid backdrop */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.06]"
+        style={{
+          backgroundImage:
+            "linear-gradient(var(--color-paper) 1px, transparent 1px), linear-gradient(90deg, var(--color-paper) 1px, transparent 1px)",
+          backgroundSize: "80px 80px",
+        }}
+      />
+      <div className="relative mx-auto max-w-[1400px] px-6">
+        <div className="flex items-center justify-between text-[11px] uppercase tracking-[0.25em] text-paper/40">
+          <span>[ Est. 2012 · North Texas ]</span>
+          <span className="hidden md:inline">Portfolio · Vol. XIV</span>
         </div>
-        <div className="relative lg:col-span-5">
-          <div className="overflow-hidden rounded-2xl bg-parchment ring-1 ring-ink/5">
-            <img
-              src={HERO_IMG}
-              alt="Professional painter working on a home renovation"
-              className="h-full w-full object-cover aspect-[4/5]"
-              loading="eager"
-            />
+
+        <h1 className="mt-10 font-heading text-[15vw] font-semibold leading-[0.85] tracking-[-0.04em] md:text-[11rem] lg:text-[13rem]">
+          <span className="block">A painting</span>
+          <span className="block">
+            <span className="italic font-light text-paper/60">studio</span> for
+          </span>
+          <span className="block">
+            homes worth
+            <span className="ml-4 inline-flex h-[0.85em] w-[0.85em] translate-y-[0.05em] items-center justify-center overflow-hidden rounded-full align-middle">
+              <img src={HERO_IMG} alt="" className="h-full w-full object-cover" />
+            </span>
+            <span> </span>
+            keeping.
+          </span>
+        </h1>
+
+        <div className="mt-16 grid grid-cols-1 items-end gap-10 border-t border-paper/10 pt-8 md:grid-cols-12">
+          <p className="md:col-span-5 text-[15px] leading-relaxed text-paper/70">
+            We treat drywall, trim, and topcoats as craft. Every job runs like a small
+            construction studio — quiet crews, tight timelines, finishes that hold up
+            a decade later.
+          </p>
+          <div className="md:col-span-4 text-[11px] uppercase tracking-[0.25em] text-paper/40">
+            <div>Services</div>
+            <div className="mt-2 text-paper/90 font-medium tracking-normal text-sm normal-case">
+              Interior · Exterior · Drywall · Prep
+            </div>
+          </div>
+          <div className="md:col-span-3 flex md:justify-end">
+            <a href="#work"
+               className="group inline-flex items-center gap-3 text-[13px] font-medium">
+              <span className="grid h-14 w-14 place-items-center rounded-full bg-accent text-ink transition-transform group-hover:rotate-45">
+                <ArrowUpRight className="h-5 w-5" strokeWidth={2.2} />
+              </span>
+              See recent work
+            </a>
           </div>
         </div>
       </div>
@@ -177,90 +172,159 @@ function Hero() {
   );
 }
 
-function TrustBar() {
-  const items = [
-    { icon: ShieldCheck, label: "Fully Insured" },
-    { icon: CalendarClock, label: "14+ Years Experience" },
-    { icon: Award, label: "Quality Guaranteed" },
-    { icon: Star, label: "5-Star Rated" },
-  ];
+/* ---------------- MARQUEE ---------------- */
+function Marquee() {
+  const words = ["Interior Painting", "Drywall Repair", "Exterior Coatings", "Cabinet Refinish", "Level-5 Finish", "New Construction"];
+  const row = [...words, ...words, ...words];
   return (
-    <section className="border-y border-ink/5 bg-parchment/40">
-      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-6 py-8 md:grid-cols-4">
-        {items.map(({ icon: Icon, label }) => (
-          <div key={label} className="flex items-center gap-3">
-            <Icon className="h-5 w-5 text-ink" strokeWidth={1.5} />
-            <span className="text-sm font-medium text-ink">{label}</span>
-          </div>
+    <section className="border-y border-paper/10 py-6 overflow-hidden">
+      <div className="marquee flex gap-12 whitespace-nowrap font-heading text-2xl md:text-3xl">
+        {row.map((w, i) => (
+          <span key={i} className="flex items-center gap-12 text-paper/80">
+            {w}
+            <span className="text-accent">✳</span>
+          </span>
         ))}
       </div>
     </section>
   );
 }
 
-function Services() {
+/* ---------------- INDEX (project list) ---------------- */
+function Index() {
   return (
-    <section id="services" className="py-24">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="mb-14 flex flex-col justify-between gap-6 md:flex-row md:items-end">
-          <div className="max-w-xl">
-            <span className="text-xs font-semibold uppercase tracking-[0.25em] text-ink/50">
-              What we do
-            </span>
-            <h2 className="mt-3 font-heading text-4xl font-semibold text-ink text-balance md:text-5xl">
-              Craftsmanship in every stroke.
+    <section id="work" className="border-b border-paper/10 py-24">
+      <div className="mx-auto max-w-[1400px] px-6">
+        <div className="mb-14 flex items-end justify-between">
+          <div>
+            <div className="text-[11px] uppercase tracking-[0.25em] text-paper/40">Index · 2024 — 2025</div>
+            <h2 className="mt-4 font-heading text-5xl font-semibold tracking-tight md:text-6xl">
+              Selected work.
             </h2>
           </div>
-          <p className="max-w-md text-ink-muted/80">
-            From single-room refreshes to full-home exteriors, we treat every surface like it's
-            our own.
-          </p>
+          <div className="hidden text-right text-[11px] uppercase tracking-[0.25em] text-paper/40 md:block">
+            {PROJECTS.length} projects
+          </div>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-3">
-          {SERVICES.map((s) => (
-            <article
-              key={s.title}
-              className="group overflow-hidden rounded-2xl bg-parchment/50 ring-1 ring-ink/5 transition-all hover:-translate-y-1 hover:ring-ink/15"
-            >
-              <div className="aspect-[4/3] overflow-hidden">
-                <img
-                  src={s.image}
-                  alt={s.title}
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  loading="lazy"
-                />
-              </div>
-              <div className="p-7">
-                <h3 className="font-heading text-xl font-semibold text-ink">{s.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-ink-muted/80">{s.description}</p>
-              </div>
-            </article>
+        <ul className="divide-y divide-paper/10 border-y border-paper/10">
+          {PROJECTS.map((p) => (
+            <li key={p.n}>
+              <a href="#estimate" className="group grid grid-cols-12 items-center gap-4 py-6 transition-colors hover:bg-paper/5 px-2 -mx-2">
+                <span className="col-span-1 font-heading text-sm text-paper/40">{p.n}</span>
+                <div className="col-span-6 md:col-span-5">
+                  <div className="font-heading text-xl md:text-2xl font-medium tracking-tight">{p.title}</div>
+                  <div className="mt-1 text-xs text-paper/50">{p.scope}</div>
+                </div>
+                <div className="hidden md:block col-span-2 text-[11px] uppercase tracking-[0.2em] text-paper/50">{p.tag}</div>
+                <div className="col-span-3 md:col-span-2 text-[11px] uppercase tracking-[0.2em] text-paper/50">{p.location}</div>
+                <div className="col-span-2 md:col-span-1 flex justify-end">
+                  <span className="grid h-10 w-10 place-items-center rounded-full border border-paper/20 transition-all group-hover:border-accent group-hover:bg-accent group-hover:text-ink">
+                    <ArrowUpRight className="h-4 w-4" />
+                  </span>
+                </div>
+              </a>
+            </li>
           ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- FEATURED (asymmetric gallery) ---------------- */
+function Featured() {
+  return (
+    <section className="border-b border-paper/10 py-24">
+      <div className="mx-auto max-w-[1400px] px-6">
+        <div className="grid grid-cols-12 gap-4 md:gap-6">
+          <figure className="col-span-12 md:col-span-8 relative overflow-hidden rounded-md">
+            <img src={INTERIOR_IMG} alt="Interior repaint" className="aspect-[16/10] w-full object-cover transition-transform duration-[1200ms] hover:scale-105" />
+            <figcaption className="absolute bottom-4 left-4 right-4 flex items-end justify-between text-paper">
+              <div>
+                <div className="text-[10px] uppercase tracking-[0.25em] text-paper/70">Featured · Interior</div>
+                <div className="font-heading text-2xl md:text-3xl font-medium">Bright modern farmhouse repaint</div>
+              </div>
+              <span className="hidden md:inline text-xs text-paper/70">Celina, TX / 2025</span>
+            </figcaption>
+            <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent" />
+          </figure>
+          <div className="col-span-12 md:col-span-4 grid grid-rows-2 gap-4 md:gap-6">
+            <figure className="relative overflow-hidden rounded-md">
+              <img src={EXTERIOR_IMG} alt="" className="aspect-[4/3] w-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-ink/60 to-transparent" />
+              <figcaption className="absolute bottom-3 left-4 right-4 text-xs uppercase tracking-[0.2em] text-paper/90">
+                Exterior · Sherman
+              </figcaption>
+            </figure>
+            <figure className="relative overflow-hidden rounded-md">
+              <img src={DRYWALL_IMG} alt="" className="aspect-[4/3] w-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-ink/60 to-transparent" />
+              <figcaption className="absolute bottom-3 left-4 right-4 text-xs uppercase tracking-[0.2em] text-paper/90">
+                Drywall · Whitesboro
+              </figcaption>
+            </figure>
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-function Process() {
+/* ---------------- CAPABILITIES ---------------- */
+function Capabilities() {
   return (
-    <section id="process" className="border-y border-ink/5 bg-parchment/40 py-24">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="mb-16 max-w-2xl">
-          <span className="text-xs font-semibold uppercase tracking-[0.25em] text-ink/50">
-            How it works
-          </span>
-          <h2 className="mt-3 font-heading text-4xl font-semibold text-ink text-balance md:text-5xl">
-            A clean, respectful process from start to finish.
-          </h2>
+    <section id="services" className="border-b border-paper/10 py-24">
+      <div className="mx-auto max-w-[1400px] px-6">
+        <div className="grid grid-cols-12 gap-8">
+          <div className="col-span-12 md:col-span-4 md:sticky md:top-28 self-start">
+            <div className="text-[11px] uppercase tracking-[0.25em] text-paper/40">§ Capabilities</div>
+            <h2 className="mt-4 font-heading text-4xl md:text-5xl font-semibold tracking-tight">
+              What we do,<br/>done properly.
+            </h2>
+          </div>
+          <div className="col-span-12 md:col-span-8">
+            <ul>
+              {CAPABILITIES.map((c) => (
+                <li key={c.k} className="group grid grid-cols-12 gap-4 border-t border-paper/10 py-8 first:border-t-0">
+                  <span className="col-span-2 font-heading text-sm text-paper/40">{c.k}</span>
+                  <div className="col-span-8">
+                    <div className="font-heading text-2xl md:text-3xl font-medium tracking-tight">{c.t}</div>
+                    <p className="mt-3 max-w-md text-sm text-paper/60">{c.d}</p>
+                  </div>
+                  <span className="col-span-2 justify-self-end">
+                    <Plus className="h-5 w-5 text-paper/40 transition-transform group-hover:rotate-90 group-hover:text-accent" />
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-          {STEPS.map((s) => (
-            <div key={s.n} className="border-t border-ink/15 pt-6">
-              <span className="font-heading text-sm font-medium text-ink/40">{s.n}</span>
-              <h4 className="mt-3 font-heading text-lg font-semibold text-ink">{s.title}</h4>
-              <p className="mt-3 text-sm leading-relaxed text-ink-muted/70">{s.body}</p>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- NUMBERS ---------------- */
+function Numbers() {
+  const stats = [
+    { n: "14", u: "yrs", l: "in business" },
+    { n: "500+", u: "", l: "projects delivered" },
+    { n: "8", u: "cities", l: "across North Texas" },
+    { n: "100%", u: "", l: "satisfaction guarantee" },
+  ];
+  return (
+    <section id="numbers" className="border-b border-paper/10 py-24">
+      <div className="mx-auto max-w-[1400px] px-6">
+        <div className="mb-12 text-[11px] uppercase tracking-[0.25em] text-paper/40">The studio · in numbers</div>
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+          {stats.map((s) => (
+            <div key={s.l} className="border-t border-paper/15 pt-6">
+              <div className="font-heading text-6xl md:text-7xl font-semibold tracking-tight leading-none">
+                {s.n}
+                {s.u && <span className="ml-1 text-xl text-paper/50">{s.u}</span>}
+              </div>
+              <div className="mt-4 text-sm text-paper/60">{s.l}</div>
             </div>
           ))}
         </div>
@@ -269,61 +333,34 @@ function Process() {
   );
 }
 
-function Testimonial() {
+/* ---------------- ESTIMATE ---------------- */
+function Estimate() {
   return (
-    <section className="py-24">
-      <div className="mx-auto max-w-4xl px-6 text-center">
-        <div className="mb-6 flex justify-center gap-0.5">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <Star key={i} className="h-5 w-5 fill-ink" strokeWidth={0} />
-          ))}
-        </div>
-        <blockquote className="font-heading text-2xl font-medium leading-snug text-ink text-balance md:text-3xl">
-          &ldquo;Torres and his crew did an incredible job on our interior repaint and drywall
-          repairs. Clean, on time, and the finish looks perfect a year later.&rdquo;
-        </blockquote>
-        <p className="mt-6 text-sm uppercase tracking-[0.2em] text-ink/50">
-          — Homeowner, Celina TX
-        </p>
-      </div>
-    </section>
-  );
-}
-
-function EstimateSection() {
-  return (
-    <section
-      id="estimate"
-      className="relative overflow-hidden bg-ink py-24 text-paper"
-    >
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-16 px-6 lg:grid-cols-12">
-        <div className="lg:col-span-5">
-          <span className="text-xs font-semibold uppercase tracking-[0.25em] text-paper/50">
-            Free Estimate
-          </span>
-          <h2 className="mt-3 font-heading text-4xl font-semibold text-balance md:text-5xl">
-            Tell us about your project.
-          </h2>
-          <p className="mt-6 max-w-md text-paper/70">
-            Fill out the form and we'll get back to you within one business day with a clear,
-            no-pressure quote. Prefer to talk? Give us a call.
-          </p>
-          <ul className="mt-10 space-y-4">
-            {[
-              "Response within 24 hours",
-              "Free on-site walkthrough",
-              "Transparent written quote",
-              "No obligation, no pressure",
-            ].map((line) => (
-              <li key={line} className="flex items-start gap-3 text-sm text-paper/80">
-                <Check className="mt-0.5 h-4 w-4 shrink-0 text-paper" strokeWidth={2} />
-                {line}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="lg:col-span-7">
-          <EstimateForm />
+    <section id="estimate" className="border-b border-paper/10 py-24">
+      <div className="mx-auto max-w-[1400px] px-6">
+        <div className="grid grid-cols-12 gap-10">
+          <div className="col-span-12 md:col-span-5">
+            <div className="text-[11px] uppercase tracking-[0.25em] text-paper/40">§ Start a project</div>
+            <h2 className="mt-4 font-heading text-5xl md:text-6xl font-semibold tracking-tight leading-[0.9]">
+              Tell us<br/>
+              <span className="italic font-light text-paper/60">what you're</span><br/>
+              painting.
+            </h2>
+            <p className="mt-8 max-w-md text-sm text-paper/60 leading-relaxed">
+              A free walkthrough, a plain-language quote, and a response within
+              one business day. No pressure — just craft.
+            </p>
+            <div className="mt-10 space-y-3 text-sm">
+              <a href="tel:" className="flex items-center gap-3 text-paper/80 hover:text-paper">
+                <Phone className="h-4 w-4 text-accent" />
+                Call the studio
+              </a>
+              <div className="text-paper/50 text-xs uppercase tracking-[0.2em]">Whitesboro · North TX</div>
+            </div>
+          </div>
+          <div className="col-span-12 md:col-span-7">
+            <EstimateForm />
+          </div>
         </div>
       </div>
     </section>
@@ -346,12 +383,10 @@ function EstimateForm() {
       city: String(fd.get("city") ?? "").trim(),
       message: String(fd.get("message") ?? "").trim(),
     };
-
     if (!data.name || !data.email || !data.phone || !data.service) {
       toast.error("Please fill out name, email, phone, and service.");
       return;
     }
-
     setPending(true);
     try {
       await submit({ data });
@@ -365,146 +400,105 @@ function EstimateForm() {
     }
   }
 
-  const inputClass =
-    "h-12 w-full rounded-lg border border-paper/15 bg-paper/5 px-4 text-paper placeholder:text-paper/40 outline-none transition-colors focus:border-paper/40 focus:bg-paper/10";
+  const field =
+    "peer h-12 w-full border-0 border-b border-paper/20 bg-transparent px-0 text-paper placeholder-transparent focus:border-accent focus:outline-none focus:ring-0";
+  const lbl =
+    "pointer-events-none absolute left-0 top-3 text-sm text-paper/50 transition-all peer-focus:-top-2 peer-focus:text-[10px] peer-focus:uppercase peer-focus:tracking-[0.22em] peer-focus:text-accent peer-[:not(:placeholder-shown)]:-top-2 peer-[:not(:placeholder-shown)]:text-[10px] peer-[:not(:placeholder-shown)]:uppercase peer-[:not(:placeholder-shown)]:tracking-[0.22em] peer-[:not(:placeholder-shown)]:text-paper/60";
 
   return (
-    <form onSubmit={onSubmit} className="rounded-2xl bg-paper/5 p-6 ring-1 ring-paper/10 md:p-8">
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <label className="block">
-          <span className="mb-2 block text-xs font-medium uppercase tracking-widest text-paper/60">
-            Name*
-          </span>
-          <input name="name" type="text" required maxLength={120} className={inputClass} placeholder="Your name" />
-        </label>
-        <label className="block">
-          <span className="mb-2 block text-xs font-medium uppercase tracking-widest text-paper/60">
-            Phone*
-          </span>
-          <input name="phone" type="tel" required maxLength={40} className={inputClass} placeholder="(555) 555-5555" />
-        </label>
-        <label className="block md:col-span-2">
-          <span className="mb-2 block text-xs font-medium uppercase tracking-widest text-paper/60">
-            Email*
-          </span>
-          <input name="email" type="email" required maxLength={254} className={inputClass} placeholder="you@example.com" />
-        </label>
-        <label className="block">
-          <span className="mb-2 block text-xs font-medium uppercase tracking-widest text-paper/60">
-            Service*
-          </span>
-          <select name="service" required defaultValue="" className={`${inputClass} appearance-none`}>
-            <option value="" disabled>
-              Choose a service
-            </option>
-            <option value="Interior Painting">Interior Painting</option>
-            <option value="Exterior Painting">Exterior Painting</option>
-            <option value="Drywall & Repair">Drywall & Repair</option>
-            <option value="Multiple / Not sure">Multiple / Not sure</option>
-          </select>
-        </label>
-        <label className="block">
-          <span className="mb-2 block text-xs font-medium uppercase tracking-widest text-paper/60">
-            City
-          </span>
-          <input name="city" type="text" maxLength={120} className={inputClass} placeholder="Whitesboro, Sherman…" />
-        </label>
-        <label className="block md:col-span-2">
-          <span className="mb-2 block text-xs font-medium uppercase tracking-widest text-paper/60">
-            Project details
-          </span>
-          <textarea
-            name="message"
-            rows={4}
-            maxLength={2000}
-            className={`${inputClass} h-auto py-3 leading-relaxed`}
-            placeholder="Rooms, square footage, timeline, questions…"
-          />
-        </label>
+    <form onSubmit={onSubmit} className="grid grid-cols-1 gap-8 md:grid-cols-2">
+      <div className="relative">
+        <input name="name" type="text" required maxLength={120} placeholder=" " className={field} />
+        <label className={lbl}>Name*</label>
       </div>
-      <button
-        type="submit"
-        disabled={pending}
-        className="mt-6 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-paper px-8 font-medium text-ink transition-colors hover:bg-parchment disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
-      >
-        {pending ? "Sending…" : "Send my request"}
-        {!pending && <ArrowRight className="h-4 w-4" />}
-      </button>
+      <div className="relative">
+        <input name="phone" type="tel" required maxLength={40} placeholder=" " className={field} />
+        <label className={lbl}>Phone*</label>
+      </div>
+      <div className="relative md:col-span-2">
+        <input name="email" type="email" required maxLength={254} placeholder=" " className={field} />
+        <label className={lbl}>Email*</label>
+      </div>
+      <div className="relative">
+        <select name="service" required defaultValue="" className={`${field} appearance-none`}>
+          <option value="" disabled className="bg-ink">Choose service</option>
+          <option className="bg-ink" value="Interior Painting">Interior Painting</option>
+          <option className="bg-ink" value="Exterior Painting">Exterior Painting</option>
+          <option className="bg-ink" value="Drywall & Repair">Drywall & Repair</option>
+          <option className="bg-ink" value="Multiple / Not sure">Multiple / Not sure</option>
+        </select>
+        <label className="pointer-events-none absolute -top-2 left-0 text-[10px] uppercase tracking-[0.22em] text-paper/60">Service*</label>
+      </div>
+      <div className="relative">
+        <input name="city" type="text" maxLength={120} placeholder=" " className={field} />
+        <label className={lbl}>City</label>
+      </div>
+      <div className="relative md:col-span-2">
+        <textarea name="message" rows={3} maxLength={2000} placeholder=" "
+          className={`${field} h-auto resize-none py-3 leading-relaxed`} />
+        <label className={lbl}>Project details</label>
+      </div>
+      <div className="md:col-span-2 flex items-center justify-between border-t border-paper/10 pt-6">
+        <span className="text-[11px] uppercase tracking-[0.22em] text-paper/40">
+          We reply within 24h
+        </span>
+        <button type="submit" disabled={pending}
+          className="group inline-flex h-12 items-center gap-2 rounded-full bg-accent pl-6 pr-1 font-medium text-ink transition-transform hover:scale-[1.02] disabled:opacity-60">
+          {pending ? "Sending…" : "Send request"}
+          <span className="grid h-10 w-10 place-items-center rounded-full bg-ink text-accent transition-transform group-hover:rotate-45">
+            <ArrowUpRight className="h-4 w-4" strokeWidth={2.5} />
+          </span>
+        </button>
+      </div>
     </form>
   );
 }
 
-function ServiceAreas() {
-  return (
-    <section id="areas" className="py-24">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="mb-10 max-w-xl">
-          <span className="text-xs font-semibold uppercase tracking-[0.25em] text-ink/50">
-            Where we work
-          </span>
-          <h2 className="mt-3 font-heading text-4xl font-semibold text-ink text-balance md:text-5xl">
-            Proudly serving North Texas.
-          </h2>
-        </div>
-        <div className="flex flex-wrap gap-3">
-          {AREAS.map((a) => (
-            <span
-              key={a}
-              className="inline-flex items-center gap-2 rounded-full border border-ink/10 bg-parchment/50 px-5 py-2.5 text-sm font-medium text-ink"
-            >
-              <MapPin className="h-3.5 w-3.5 text-ink/50" strokeWidth={1.5} />
-              {a}
-            </span>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
+/* ---------------- FOOTER ---------------- */
 function Footer() {
   return (
-    <footer className="border-t border-ink/10 bg-parchment/40 py-16">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-6 md:grid-cols-3">
-        <div>
-          <span className="font-heading text-lg font-bold uppercase tracking-tight text-ink">
-            Torres Paint & Drywall
-          </span>
-          <p className="mt-4 max-w-xs text-sm leading-relaxed text-ink-muted/70">
-            Family-owned painting and drywall contractor serving North Texas since 2012.
-          </p>
+    <footer className="relative overflow-hidden pt-24 pb-10">
+      <div className="mx-auto max-w-[1400px] px-6">
+        <div className="grid grid-cols-12 gap-8 border-b border-paper/10 pb-16">
+          <div className="col-span-12 md:col-span-6">
+            <div className="text-[11px] uppercase tracking-[0.25em] text-paper/40">Serving</div>
+            <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 font-heading text-xl md:text-2xl">
+              {AREAS.map((a, i) => (
+                <span key={a} className="flex items-center gap-6">
+                  {a}
+                  {i < AREAS.length - 1 && <span className="text-accent">·</span>}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div className="col-span-6 md:col-span-3">
+            <div className="text-[11px] uppercase tracking-[0.25em] text-paper/40">Studio</div>
+            <ul className="mt-4 space-y-2 text-sm text-paper/80">
+              <li>Whitesboro, TX</li>
+              <li>Mon–Sat · 7a–7p</li>
+              <li>Fully insured</li>
+            </ul>
+          </div>
+          <div className="col-span-6 md:col-span-3">
+            <div className="text-[11px] uppercase tracking-[0.25em] text-paper/40">Menu</div>
+            <ul className="mt-4 space-y-2 text-sm text-paper/80">
+              <li><a href="#work" className="hover:text-accent">Work</a></li>
+              <li><a href="#services" className="hover:text-accent">Services</a></li>
+              <li><a href="#estimate" className="hover:text-accent">Estimate</a></li>
+            </ul>
+          </div>
         </div>
-        <div>
-          <h5 className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-ink">
-            Services
-          </h5>
-          <ul className="space-y-2 text-sm text-ink-muted/80">
-            <li>Interior Painting</li>
-            <li>Exterior Painting</li>
-            <li>Drywall & Repair</li>
-          </ul>
+
+        <div className="mt-10 grid grid-cols-12 items-end gap-6">
+          <div className="col-span-12 md:col-span-8">
+            <div className="font-heading text-[18vw] md:text-[10rem] leading-[0.85] tracking-[-0.05em] text-paper/90">
+              Torres.
+            </div>
+          </div>
+          <div className="col-span-12 md:col-span-4 text-[11px] uppercase tracking-[0.25em] text-paper/40 md:text-right">
+            © {new Date().getFullYear()} · Paint & Drywall Studio<br/>Made in North Texas
+          </div>
         </div>
-        <div>
-          <h5 className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-ink">
-            Contact
-          </h5>
-          <ul className="space-y-2 text-sm text-ink-muted/80">
-            <li className="flex items-center gap-2">
-              <Mail className="h-4 w-4" strokeWidth={1.5} />
-              Whitesboro, TX
-            </li>
-            <li>
-              <a href="#estimate" className="underline underline-offset-4 hover:text-ink">
-                Request a free estimate
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div className="mx-auto mt-12 max-w-7xl border-t border-ink/10 px-6 pt-8">
-        <p className="text-xs uppercase tracking-[0.2em] text-ink/40">
-          © {new Date().getFullYear()} Torres Paint & Drywall. All rights reserved.
-        </p>
       </div>
     </footer>
   );
