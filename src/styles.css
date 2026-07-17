@@ -18,6 +18,15 @@
  * 2. Register it in @theme inline as --color-<name>: var(--<name>)
  */
 
+@theme {
+  --color-paper: #f5f3ee;
+  --color-parchment: #e8e4dd;
+  --color-ink: #0d0d0d;
+  --color-ink-muted: #2d2d2d;
+  --font-heading: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Figtree", ui-sans-serif, system-ui, sans-serif;
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -138,7 +147,13 @@
   }
 
   body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
   }
 }

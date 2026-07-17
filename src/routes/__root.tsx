@@ -77,19 +77,44 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      {
+        title:
+          "Torres Paint & Drywall — Premium Painting & Drywall in North Texas",
+      },
+      {
+        name: "description",
+        content:
+          "Family-owned painting and drywall contractor serving Whitesboro, Sherman, Gainesville, Celina and all of North Texas. Free estimates, quality guaranteed.",
+      },
+      {
+        property: "og:title",
+        content: "Torres Paint & Drywall — North Texas",
+      },
+      {
+        property: "og:description",
+        content:
+          "Interior & exterior painting, custom finishes, and flawless drywall repair. Family owned since 2012.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
+      },
+      {
+        rel: "preconnect",
+        href: "https://fonts.googleapis.com",
+      },
+      {
+        rel: "preconnect",
+        href: "https://fonts.gstatic.com",
+        crossOrigin: "anonymous",
+      },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap",
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
