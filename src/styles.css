@@ -19,11 +19,11 @@
  */
 
 @theme {
-  --color-paper: #efece5;
-  --color-parchment: #d8d3c8;
-  --color-ink: #0f0e0c;
-  --color-ink-muted: #1c1b18;
-  --color-accent: #e8623d;
+  --color-paper: #f4f6fa;
+  --color-parchment: #d8e2ee;
+  --color-ink: #0a1f3d;
+  --color-ink-muted: #12335c;
+  --color-accent: #8ec5e8;
   --font-heading: "Outfit", ui-sans-serif, system-ui, sans-serif;
   --font-body: "Figtree", ui-sans-serif, system-ui, sans-serif;
 }
