@@ -113,7 +113,7 @@ function Nav() {
 /* ---------------- HERO ---------------- */
 function Hero() {
   return (
-    <section id="top" className="relative min-h-screen overflow-hidden pt-28">
+    <section id="top" className="relative overflow-hidden pt-24 pb-10">
       {/* grid backdrop */}
       <div
         aria-hidden
@@ -130,22 +130,15 @@ function Hero() {
           <span className="hidden md:inline">Portfolio · Vol. XIV</span>
         </div>
 
-        <h1 className="mt-10 font-heading text-[15vw] font-semibold leading-[0.85] tracking-[-0.04em] md:text-[11rem] lg:text-[13rem]">
+        <h1 className="mt-6 font-heading text-[clamp(2.5rem,8vw,6.5rem)] font-semibold leading-[0.9] tracking-[-0.04em]">
           <span className="block">A painting</span>
           <span className="block">
             <span className="italic font-light text-paper/60">studio</span> for
-          </span>
-          <span className="block">
-            homes worth
-            <span className="ml-4 inline-flex h-[0.85em] w-[0.85em] translate-y-[0.05em] items-center justify-center overflow-hidden rounded-full align-middle">
-              <img src={HERO_IMG} alt="" className="h-full w-full object-cover" />
-            </span>
-            <span> </span>
-            keeping.
+            homes worth keeping.
           </span>
         </h1>
 
-        <div className="mt-16 grid grid-cols-1 items-end gap-10 border-t border-paper/10 pt-8 md:grid-cols-12">
+        <div className="mt-8 grid grid-cols-1 items-end gap-6 border-t border-paper/10 pt-6 md:grid-cols-12">
           <p className="md:col-span-5 text-[15px] leading-relaxed text-paper/70">
             We treat drywall, trim, and topcoats as craft. Every job runs like a small
             construction studio — quiet crews, tight timelines, finishes that hold up
@@ -160,8 +153,8 @@ function Hero() {
           <div className="md:col-span-3 flex md:justify-end">
             <a href="#work"
                className="group inline-flex items-center gap-3 text-[13px] font-medium">
-              <span className="grid h-14 w-14 place-items-center rounded-full bg-accent text-ink transition-transform group-hover:rotate-45">
-                <ArrowUpRight className="h-5 w-5" strokeWidth={2.2} />
+              <span className="grid h-12 w-12 place-items-center rounded-full bg-accent text-ink transition-transform group-hover:rotate-45">
+                <ArrowUpRight className="h-4 w-4" strokeWidth={2.2} />
               </span>
               See recent work
             </a>
